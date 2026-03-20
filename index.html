@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Primera Comunión - Jesús</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dorado: #c5a059;
+            --dorado-brillante: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --dorado-suave: #eaddca;
+            --crema: #fdfbf7;
+            --texto: #4a4a4a;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden; 
+        }
+
+        /* --- CAPA DE ENTRADA --- */
+        #capa-inicio {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #fff 0%, var(--crema) 100%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 1s ease-out;
+        }
+
+        #capa-inicio p {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--dorado);
+            margin-top: 20px;
+        }
+
+        /* --- CUERPO DE LA INVITACIÓN --- */
+        .invitacion {
+            background-color: var(--crema);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid var(--dorado);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            position: relative;
+            border-radius: 12px;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out 0.5s, transform 1.2s ease-out 0.5s;
+        }
+
+        /* --- LLUVIA (POR ENFRENTE) --- */
+        .simbolo-lluvia {
+            position: fixed;
+            top: -10%;
+            font-size: 28px;
+            user-select: none;
+            z-index: 100;
+            pointer-events: none;
+            animation: caer linear infinite;
+        }
+
+        /* --- BOTONES --- */
+        .btn {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            max-width: 280px;
+            transition: 0.3s;
+            position: relative;
+            z-index: 500; 
+            cursor: pointer;
+        }
+
+        .nombre-dorado { font-family: 'Great Vibes', cursive; font-size: 4.5rem; margin: 10px 0 5px 0; background: var(--dorado-brillante); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+        .iconos-sagrados { font-size: 1.8rem; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
+        
+        .foto-carrusel { width: 220px; height: 220px; margin: 20px auto 15px auto; border-radius: 50%; border: 6px solid white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
+        .foto-carrusel img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease-in-out; }
+        .foto-carrusel img.active { opacity: 1; }
+
+        .texto-esperamos { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 1.1rem; color: var(--dorado); letter-spacing: 4px; text-transform: uppercase; margin: 20px 0; }
+        
+        .info-evento { margin: 15px 0; padding: 20px; background-color: #fff; border-radius: 10px; border: 1px dashed var(--dorado); color: var(--texto); line-height: 1.5; }
+        
+        /* CUENTA REGRESIVA CON SEGUNDOS */
+        .titulo-cuenta { font-size: 0.9rem; color: var(--dorado); margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        #countdown { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tiempo-bloque { background: var(--dorado); color: white; padding: 10px; border-radius: 8px; min-width: 60px; }
+        .tiempo-valor { display: block; font-size: 1.3rem; font-weight: bold; }
+        .tiempo-etiqueta { font-size: 0.65rem; text-transform: uppercase; }
+
+        .btn-maps { background: #fff; color: var(--dorado); border: 2px solid var(--dorado); }
+        .btn-whatsapp { background: var(--dorado); color: white; margin-top: 20px; }
+
+        @keyframes caer { 0% { transform: translateY(0vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(20deg); opacity: 0; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} }
+        .invitacion.activa { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div id="capa-inicio" onclick="iniciarMagia(event)">
+        <div style="font-size: 80px; animation: bounce 2s infinite;">🕊️</div>
+        <p>Toca para descubrir<br>la invitación de Jesús</p>
+    </div>
+
+    <audio id="miMusica" loop>
+        <source src="https://www.dropbox.com/scl/fi/7iri2d9b52o3hrq4g4kc5/cancion-invitacion.mp3?rlkey=fb8n7t81chy13sdpvne4g1uye&st=2t7rooxo&raw=1" type="audio/mpeg">
+    </audio>
+
+    <div class="invitacion" id="invitacion-main">
+        <div class="header">
+            <p style="letter-spacing: 5px; font-size: 0.8rem;">MI PRIMERA COMUNIÓN</p>
+            <div class="nombre-dorado">Jesús</div>
+            <div class="iconos-sagrados">
+                <span>🕯️</span><span>🍷</span><span>🍇</span><span>⚪</span><span>🌾</span>
+            </div>
+        </div>
+
+        <div class="foto-carrusel" id="carrusel">
+            <img src="https://www.dropbox.com/scl/fi/3tti2ispmzn6sq5ejagm2/carrusel-1.jpg?rlkey=2owkhwm3dngb0vc0n7pzzuj4h&st=w1irr80q&raw=1" class="active">
+            <img src="https://www.dropbox.com/scl/fi/s80lwjqzhnsrf82n8xg1u/carrusel-2.jpg?rlkey=z2jli2xo9uigpt2q632414m60&st=271i2z4b&raw=1">
+            <img src="https://www.dropbox.com/scl/fi/s2rt2i71lnllyslvp4umd/carrusel-3.jpg?rlkey=qnai2zv7fi0d154xf39wpje5g&st=f7pdug4g&raw=1">
+            <img src="https://www.dropbox.com/scl/fi/iqi13hoe6g8g74xyo8jdu/carrusel-4.jpg?rlkey=3ys09im1g9kxq8jx48f3us3zi&st=livbeyoc&raw=1">
+            <img src="https://www.dropbox.com/scl/fi/lyqz6ikiy6zafw15c96sj/carrusel-5.jpg?rlkey=mcodwqewk1xyytak09g0gqsga&st=onv3jfoq&raw=1">
+            <img src="https://www.dropbox.com/scl/fi/4h047t3b8fah7iewo6srd/carrusel-6.jpg?rlkey=7vzkcbenkrixdwujeoe5s6ymk&st=dmz0pjvo&raw=1">
+            <img src="https://www.dropbox.com/scl/fi/h9qg3unvetc1mcsgpj7fr/carrusel-7.jpg?rlkey=n3p2f3ewzl30ghyovb7pm9en2&st=ds01ttcw&raw=1">
+        </div>
+
+        <div class="texto-esperamos">Los esperamos</div>
+
+        <p style="padding: 0 15px; font-style: italic; color: #666; font-size: 0.85rem;">
+            "Yo soy el pan vivo bajado del cielo. El que coma de este pan vivirá para siempre."
+        </p>
+
+        <div class="info-evento">
+            <p style="font-size: 1rem; color: var(--dorado); margin-bottom: 5px;"><strong>LA SANTA MISA</strong></p>
+            <p>Sábado 25 de Julio, 2026 | 12:00 hrs</p>
+            <p><strong>Parroquia de San Miguel</strong></p>
+            <p style="font-size: 0.85rem;">Zinacantepec, Edo. de México</p>
+            <p style="font-size: 0.75rem; color: #888;"><i>(Misa Comunitaria)</i></p>
+            <a href="https://maps.app.goo.gl/EEGsdWJgSrb6D2p29" target="_blank" class="btn btn-maps" style="margin-top: 10px;">📍 Ubicación de la Misa</a>
+        </div>
+
+        <div class="info-evento">
+            <p style="font-size: 1rem; color: var(--dorado); margin-bottom: 5px;"><strong>RECEPCIÓN</strong></p>
+            <p>A partir de las 15:00 hrs</p>
+            <p><strong>SALÓN COLIBRÍ</strong></p>
+            <p style="font-size: 0.85rem;">Calle J. Cruz Zarza 25, Linda vista,<br>Zinacantepec, Edo. de México</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; color: var(--dorado);"><i>Calle paralela al Parque Colibrí</i></p>
+            <a href="https://maps.app.goo.gl/MEUDCFREDyaNfQwJ8" target="_blank" class="btn btn-maps" style="margin-top: 10px;">📍 Ubicación del Salón</a>
+        </div>
+
+        <div class="titulo-cuenta">Faltan para el gran día:</div>
+        <div id="countdown">
+            <div class="tiempo-bloque"><span class="tiempo-valor" id="days">00</span><span class="tiempo-etiqueta">Días</span></div>
+            <div class="tiempo-bloque"><span class="tiempo-valor" id="hours">00</span><span class="tiempo-etiqueta">Hrs</span></div>
+            <div class="tiempo-bloque"><span class="tiempo-valor" id="minutes">00</span><span class="tiempo-etiqueta">Min</span></div>
+            <div class="tiempo-bloque"><span class="tiempo-valor" id="seconds">00</span><span class="tiempo-etiqueta">Seg</span></div>
+        </div>
+        
+        <a href="https://wa.me/527291491293?text=%C2%A1Hola!%20Confirmo%20la%20asistencia%20de%20la%20Familia:%20________%20y%20asistiremos%20________%20personas%20a%20la%20comuni%C3%B3n%20de%20Jes%C3%BAs." target="_blank" class="btn btn-whatsapp">📱 Confirmar Asistencia</a>
+    </div>
+
+    <script>
+        const simbolos = ['🕊️', '🍇', '🍷', '🕯️', '🌾'];
+        let fotoIndex = 0;
+
+        function iniciarMagia(event) {
+            document.getElementById("miMusica").play().catch(e => console.log("Audio play blocked"));
+            document.getElementById("capa-inicio").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("capa-inicio").style.display = "none";
+                document.getElementById("invitacion-main").classList.add("activa");
+                document.body.style.overflowY = "auto";
+                setInterval(crearLluviaSagrada, 500);
+                setInterval(cambiarFoto, 2000); 
+            }, 1000);
+        }
+
+        function cambiarFoto() {
+            const fotos = document.querySelectorAll('#carrusel img');
+            if(fotos.length > 0) {
+                fotos[fotoIndex].classList.remove('active');
+                fotoIndex = (fotoIndex + 1) % fotos.length;
+                fotos[fotoIndex].classList.add('active');
+            }
+        }
+
+        function crearLluviaSagrada() {
+            const item = document.createElement('div');
+            item.className = 'simbolo-lluvia';
+            item.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+            item.style.left = Math.random() * 100 + "vw";
+            item.style.animationDuration = Math.random() * 3 + 4 + "s";
+            item.style.opacity = Math.random() * 0.5 + 0.3;
+            document.body.appendChild(item);
+            setTimeout(() => item.remove(), 7000);
+        }
+
+        const fechaMisa = new Date('July 25, 2026 12:00:00').getTime();
+        setInterval(() => {
+            const ahora = new Date().getTime();
+            const d = fechaMisa - ahora;
+
+            // Cálculos de tiempo
+            const dias = Math.floor(d / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((d % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = Math.max(0, dias);
+            document.getElementById("hours").innerText = Math.max(0, horas);
+            document.getElementById("minutes").innerText = Math.max(0, minutos);
+            document.getElementById("seconds").innerText = Math.max(0, segundos);
+        }, 1000);
+    </script>
+</body>
+</html>
